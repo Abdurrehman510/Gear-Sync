@@ -582,6 +582,6 @@ Are you a business owner, startup founder, or enterprise looking to build high-p
 
 <div align="center">
 
-Made with ❤️ in Melbourne, Australia &nbsp;|&nbsp; © 2025 GearSync &nbsp;|&nbsp; Built by [Abdurrehman Narmawala](https://abdurrehman.co.in)
+Made with ❤️ in Melbourne, Australia &nbsp;|&nbsp; © 2026 GearSync &nbsp;|&nbsp; Built by [Abdurrehman Narmawala](https://abdurrehman.co.in)
 
 </div>
