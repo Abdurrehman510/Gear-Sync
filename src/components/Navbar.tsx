@@ -150,7 +150,7 @@ export default function Navbar() {
         <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
           {user ? (
             <div className="desktop-only-auth" style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
-              <span style={{ fontSize: '1.4rem', color: 'var(--white)', fontFamily: 'var(--ff-chakra-petch)', fontWeight: 'var(--fw-600)' }}>
+              <span style={{ fontSize: '1.4rem', color: 'var(--white)', fontFamily: 'var(--ff-chakra-petch)', fontWeight: 'var(--fw-600)', whiteSpace: 'nowrap' }}>
                 Hello, {user.name.split(' ')[0]}
               </span>
               <button 

@@ -894,7 +894,11 @@ body {
 
   .nav-toggle-btn { display: none; }
 
-  .header .container { gap: 30px; }
+  .header .container {
+    max-width: 100%;
+    padding-inline: 40px;
+    gap: 20px;
+  }
 
   .navbar,
   .navbar.active {
@@ -1212,7 +1216,7 @@ body {
    * REUSED STYLE
    */
 
-  :is(.header, .hero) .container { max-width: 1280px; }
+  .hero .container { max-width: 1280px; }
 
   .section-subtitle::before {
     height: 20px;
