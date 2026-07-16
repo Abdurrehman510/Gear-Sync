@@ -8,9 +8,9 @@
 
 # GearSync
 
-### Premium Auto Maintenance & Booking Platform
+### Enterprise-Grade Auto Maintenance, Dispatch & Booking Platform
 
-A **production-grade**, full-stack car service booking and management system built with the **MERN stack** and **Next.js App Router**. Customers can browse services, book appointments, and leave verified reviews. Administrators get a full command dashboard for managing bookings, mechanics, services, users, and live revenue analytics.
+A high-performance, production-grade automotive service booking, scheduling, and management system built for vehicle servicing networks and independent workshop groups. Built on **Next.js App Router**, **TypeScript**, and **MongoDB Atlas**, it automates booking lifecycles, dispatcher scheduling, customer reviews, and administrative business analytics.
 
 <br/>
 
@@ -29,432 +29,167 @@ A **production-grade**, full-stack car service booking and management system bui
 ## Table of Contents
 
 - [Overview](#overview)
-- [Features](#features)
+- [Enterprise Features](#enterprise-features)
 - [Tech Stack](#tech-stack)
-- [Architecture](#architecture)
-- [Project Structure](#project-structure)
+- [System Architecture](#system-architecture)
 - [Database Schema](#database-schema)
 - [API Reference](#api-reference)
-- [Pages & Screens](#pages--screens)
-- [Security](#security)
-- [SEO & Performance](#seo--performance)
+- [Security & Compliance](#security--compliance)
+- [Production SEO & Performance](#production-seo--performance)
 - [Getting Started](#getting-started)
 - [Environment Variables](#environment-variables)
 - [Deployment](#deployment)
+- [About the Author](#about-the-author)
 
 ---
 
 ## Overview
 
-**GearSync** is a complete, real-world automotive service platform transformed from a static HTML template into a fully functional MERN stack application using **Next.js App Router**, **TypeScript**, and **MongoDB Atlas**. It is architected to industry standards and is deployment-ready for production.
+**GearSync** is a custom, commercial-grade scheduling and business administration portal designed for car service stations and auto mechanics. It streamlines customer onboarding, manages service menus, prevents time-slot conflicts, and aggregates business metrics. 
 
-Key product pillars:
-- **Secure Authentication** — JWT sessions inside HttpOnly cookies with role-based access control (RBAC)
-- **Smart Booking Engine** — Real-time slot availability with conflict prevention and same-day time-buffer logic
-- **Verified Reviews** — Customers can only submit feedback on services they have had completed
-- **Admin Analytics** — Live revenue aggregation, status distributions, and mechanic dispatch tools
-- **Production SEO** — Dynamic sitemap, robots.txt, Schema.org JSON-LD, and Open Graph metadata
-- **PWA Installable** — Fully configured web manifest for mobile and desktop installations
+By utilizing **Next.js Route Handlers** for the backend API, the application is self-contained, light, and optimized for serverless deployments on platforms like Vercel.
 
 ---
 
-## Features
+## Enterprise Features
 
-### Authentication & Authorization
-- [x] User registration with Bcrypt password hashing (salt rounds: 10)
-- [x] JWT-based session authentication (7-day expiry)
-- [x] Secure HttpOnly, SameSite=Strict, Secure-flagged session cookies
-- [x] Three distinct roles: `customer`, `mechanic`, `admin`
-- [x] First registered user is automatically elevated to `admin`
-- [x] Role-based API route guards enforced server-side on every protected endpoint
+### 👤 Identity & Access Control (RBAC)
+- **Bcrypt Encrypted Authentication**: Secured with 10 salt rounds.
+- **Secure JWT Sessions**: Handled via server-side HttpOnly, SameSite=Strict, Secure-flagged cookies to prevent XSS/CSRF exploits.
+- **Role-Based Access Control**: Scoped views and database writes for `customer`, `mechanic`, and `admin` roles.
+- **Admin Self-Lockout Safety**: Automated locks prevent admins from accidentally downgrading their roles or deleting their profiles.
 
-### Services Catalog
-- [x] Browse the full services grid with category badges, pricing, and duration
-- [x] Search and filter services by name or category
-- [x] Service detail pages with description, pricing, and integrated review section
-- [x] Admin CRUD interface to create, update, and delete services
-- [x] Automatic database seeding of 5 default services on first catalog request (if empty)
+### 📅 Smart Scheduling Engine
+- **Live Conflict Resolution**: Direct checks on active appointments block double-bookings.
+- **1-Hour Immediate Time Buffer**: Filters slots dynamically based on the current system time to block past or late same-day slots.
+- **Pre-Selected Service Funnel**: Query-parameter routing links specific catalog listings straight into booking steps.
 
-### Appointment Booking Engine
-- [x] Multi-step booking funnel: Select service → Choose date → Pick time slot → Add notes
-- [x] Date picker with `min` constraint preventing selection of past dates
-- [x] Real-time slot availability check via `/api/appointments/slots`
-- [x] Four available daily time slots: `09:00 AM`, `11:00 AM`, `02:00 PM`, `04:00 PM`
-- [x] 1-hour same-day buffer: past or imminent slots are automatically disabled
-- [x] Pre-selection from the services catalog page via `?serviceId=` URL parameter
-- [x] `canvas-confetti` celebration animation on successful booking
+### 📊 Administrative Console
+- **Business Performance KPIs**: Live cards tracking total appointments, aggregate revenues, total customers, and active mechanics.
+- **Mongo Aggregations**: Pipelines group appointments by status, summarize completed service revenues, and list popular services.
+- **Interactive Management Grids**: Custom dashboards for service menu CRUD, dispatcher status updates, mechanic assignments, and client role controls.
 
-### Customer Dashboard
-- [x] Personal appointments table with full booking details (service, date, time, status)
-- [x] Colour-coded status badges: `pending`, `confirmed`, `in-progress`, `completed`, `cancelled`
-- [x] One-click cancellation for `pending` appointments
-- [x] Inline review submission form for `completed` appointments
-- [x] 1-5 star rating input with text comment field
-
-### Admin Control Panel
-- [x] **Overview Dashboard** — KPI cards: total bookings, revenue, customers, mechanics
-- [x] **Appointment Status Distribution** — Counts per status
-- [x] **Popular Services** — Top 3 most-booked services with booking counts
-- [x] **Recent Bookings** — Last 5 appointments with customer name, service, and status
-- [x] **Appointments Manager** — Full appointment table with inline status updates and mechanic assignment
-- [x] **Services Manager** — Create, edit, and delete service catalog entries
-- [x] **Users Manager** — View all users, change roles, delete accounts
-- [x] Self-lockout prevention: admins cannot change their own role or delete their own account
-
-### Reviews System
-- [x] Public review listings on each service detail page
-- [x] Verified buyer gate: only customers with a `completed` appointment for that service can leave a review
-- [x] 1-5 star rating + freeform comment (min 5 characters, max 1,000)
-- [x] Duplicate review prevention per customer per service
-
-### Admin Analytics (via `/api/stats`)
-- [x] Total appointment count
-- [x] Total revenue from completed appointments (MongoDB populate + reduce)
-- [x] Customer and mechanic user counts
-- [x] Status distribution via MongoDB `$group` aggregation pipeline
-- [x] Top 3 popular services via `$group -> $sort -> $limit` aggregation pipeline
-- [x] Last 5 recent bookings with populated customer and service references
+### ⭐ Verified Customer Reviews
+- **Verified Purchase Gate**: restrains review inputs to customers who have an appointment marked as `completed` for that service.
+- **Rating Matrix**: 1-5 star ratings paired with descriptive comments (Zod-validated).
 
 ---
 
 ## Tech Stack
 
-| Layer | Technology |
-|---|---|
-| **Framework** | Next.js 16.2.10 (App Router, Turbopack) |
-| **Language** | TypeScript 5.x (strict mode) |
-| **Database** | MongoDB Atlas via Mongoose 9.x |
-| **Authentication** | `jsonwebtoken` (JWT) + `bcryptjs` |
-| **Validation** | Zod 4.x |
-| **UI Icons** | `lucide-react` |
-| **Animations** | `canvas-confetti` |
-| **Styling** | Vanilla CSS (CSS variables, custom design tokens) |
-| **Typography** | Google Fonts: Chakra Petch + Mulish |
-| **SEO** | Next.js Metadata API, Schema.org JSON-LD |
-| **PWA** | Next.js `manifest.ts` Web App Manifest |
+- **Framework**: Next.js 16.2.10 (App Router, Turbopack)
+- **Language**: TypeScript 5.x (strict-mode)
+- **Database**: MongoDB Atlas via Mongoose 9.x
+- **Authentication**: JWT (`jsonwebtoken`) & `bcryptjs`
+- **Validation**: Zod 4.x
+- **Icons & Animation**: `lucide-react`, `canvas-confetti`
+- **Styling**: Vanilla CSS (modular design system with custom HSL variables)
+- **SEO & PWA**: Schema.org JSON-LD scripts, dynamic sitemaps, robots.txt, `manifest.ts`
 
 ---
 
-## Architecture
+## System Architecture
 
 ```
-Browser
-  |
-  +-- Next.js App Router (React Server & Client Components)
-  |     +-- Page Components (Client-side: 'use client')
-  |     +-- Layout Components (Navbar, Footer, Sidebar)
-  |     +-- Route Handlers (/api/...)
-  |           +-- Authentication Middleware (getAuthenticatedUser)
-  |           +-- Zod Request Validation
-  |           +-- Mongoose ORM Queries
-  |
-  +-- MongoDB Atlas
-        +-- users
-        +-- services
-        +-- appointments
-        +-- reviews
-```
-
-**Design Decisions:**
-- **No separate Express server.** All backend logic is handled by Next.js Route Handlers in a single repository.
-- **Cached Mongoose connections** using `global.mongooseCached` to prevent connection leaks during serverless hot-reloads.
-- **Server-side RBAC** on every protected route — roles are verified from the JWT inside the HttpOnly cookie only.
-- **Zod validation as the first gate** — all incoming bodies are parsed and validated before any database query.
-
----
-
-## Project Structure
-
-```
-Gear-Sync/
-+-- public/
-|   +-- assets/images/         # Static image assets (logo, services, backgrounds)
-|   +-- favicon.ico            # GearSync browser favicon
-|   +-- icon-192.png           # PWA icon 192x192
-|   +-- icon-512.png           # PWA icon 512x512
-|
-+-- src/
-|   +-- app/
-|   |   +-- api/
-|   |   |   +-- auth/          # register, login, logout, me
-|   |   |   +-- appointments/  # CRUD + slots availability
-|   |   |   +-- reviews/       # GET + POST (verified buyer)
-|   |   |   +-- services/      # CRUD + auto-seeding
-|   |   |   +-- stats/         # Admin analytics aggregation
-|   |   |   +-- users/         # Admin user management
-|   |   +-- admin/             # Admin portal pages
-|   |   +-- book/              # Booking funnel
-|   |   +-- dashboard/         # Customer dashboard
-|   |   +-- login/             # Sign-in page
-|   |   +-- register/          # Registration page
-|   |   +-- services/          # Catalog + detail pages
-|   |   +-- globals.css        # Global CSS design system
-|   |   +-- layout.tsx         # Root layout + metadata
-|   |   +-- manifest.ts        # PWA manifest
-|   |   +-- page.tsx           # Homepage
-|   |   +-- robots.ts          # Crawler policy
-|   |   +-- sitemap.ts         # Dynamic XML sitemap
-|   |
-|   +-- components/
-|   |   +-- Footer.tsx
-|   |   +-- Navbar.tsx
-|   |   +-- ServiceCard.tsx
-|   |   +-- Sidebar.tsx
-|   |   +-- Toast.tsx
-|   |
-|   +-- lib/
-|       +-- models/            # Mongoose schemas (User, Service, Appointment, Review)
-|       +-- auth.ts            # JWT + bcrypt + cookie helpers
-|       +-- db.ts              # Cached Mongoose connection
-|       +-- logger.ts          # Structured server logger
-|       +-- validation.ts      # Zod validation schemas
-|
-+-- .env.local                 # Create this locally (see below). Not committed.
-+-- .gitignore
-+-- next.config.ts
-+-- package.json
-+-- tsconfig.json
+Client Browsers
+   │
+   ├── Next.js App Router (React Server & Client Components)
+   │     ├── Pages (Client-side interactivity via 'use client')
+   │     ├── Global Layouts (Navbar, Footer, Sidebar)
+   │     └── Route Handlers (/api/...)
+   │           ├── Auth Cookie Verifications (JWT)
+   │           ├── Zod Body Parsing
+   │           └── Database Operations (Mongoose ORM)
+   │
+   └── MongoDB Atlas Database Clusters
 ```
 
 ---
 
 ## Database Schema
 
-### User
-| Field | Type | Notes |
-|---|---|---|
-| `name` | String | Required, max 50 chars |
-| `email` | String | Required, unique, lowercase |
-| `password` | String | Bcrypt hashed, excluded from queries by default |
-| `role` | Enum | `customer`, `mechanic`, or `admin` |
-| `createdAt` / `updatedAt` | Date | Mongoose timestamps |
-
-### Service
-| Field | Type | Notes |
-|---|---|---|
-| `name` | String | Required, unique, max 100 chars |
-| `description` | String | Required, max 1,000 chars |
-| `price` | Number | Required, min 0 |
-| `duration` | Number | In minutes, min 10, default 60 |
-| `category` | String | Required |
-| `image` | String | Asset path, defaults to `services-1.png` |
-
-### Appointment
-| Field | Type | Notes |
-|---|---|---|
-| `customer` | ObjectId -> User | Required |
-| `service` | ObjectId -> Service | Required |
-| `mechanic` | ObjectId -> User | Optional, assigned by admin |
-| `date` | Date | Required |
-| `timeSlot` | Enum | `09:00 AM`, `11:00 AM`, `02:00 PM`, `04:00 PM` |
-| `status` | Enum | `pending`, `confirmed`, `in-progress`, `completed`, `cancelled` |
-| `notes` | String | Optional, max 500 chars |
-
-### Review
-| Field | Type | Notes |
-|---|---|---|
-| `customer` | ObjectId -> User | Required |
-| `service` | ObjectId -> Service | Required |
-| `rating` | Number | 1-5 stars, required |
-| `comment` | String | Required, min 5, max 1,000 chars |
-| `createdAt` | Date | Auto-set |
+- **User**: Name, email, hashed password, and authorization role (`customer` | `mechanic` | `admin`).
+- **Service**: Service name, category, pricing, duration (in minutes), description, and graphic assets.
+- **Appointment**: Customer reference, service, assigned mechanic, target date, slot selection, and status lifecycle.
+- **Review**: Customer link, service link, numerical rating, and text comments.
 
 ---
 
 ## API Reference
 
-All API routes return JSON. Authentication is enforced via server-side JWT cookie validation.
+All requests expect and return JSON payloads. Session cookies must be present for protected endpoints.
 
-### Auth
+### Authentication
+`POST /api/auth/register` • `POST /api/auth/login` • `POST /api/auth/logout` • `GET /api/auth/me`
 
-| Method | Endpoint | Access | Description |
-|---|---|---|---|
-| `POST` | `/api/auth/register` | Public | Register a new user |
-| `POST` | `/api/auth/login` | Public | Login and receive session cookie |
-| `POST` | `/api/auth/logout` | Authenticated | Clear the session cookie |
-| `GET` | `/api/auth/me` | Authenticated | Return current user from session |
+### Services Management
+`GET /api/services` (Lists menu/seeds database) • `POST /api/services` (Admin only) • `GET/PUT/DELETE /api/services/[id]`
 
-### Services
+### Appointments Dispatcher
+`GET /api/appointments` • `POST /api/appointments` (Book slot) • `GET/PUT/DELETE /api/appointments/[id]` • `GET /api/appointments/slots` (Check slots)
 
-| Method | Endpoint | Access | Description |
-|---|---|---|---|
-| `GET` | `/api/services` | Public | List all services (seeds DB if empty) |
-| `POST` | `/api/services` | Admin | Create a new service |
-| `GET` | `/api/services/[id]` | Public | Get a single service |
-| `PUT` | `/api/services/[id]` | Admin | Update a service |
-| `DELETE` | `/api/services/[id]` | Admin | Delete a service |
+### Customer Reviews
+`GET /api/reviews` (Fetch catalog item reviews) • `POST /api/reviews` (Post verified review)
 
-### Appointments
-
-| Method | Endpoint | Access | Description |
-|---|---|---|---|
-| `GET` | `/api/appointments` | Authenticated | Customers: own bookings. Admins: all bookings |
-| `POST` | `/api/appointments` | Customer | Create a new booking |
-| `GET` | `/api/appointments/[id]` | Authenticated | Get a single appointment |
-| `PUT` | `/api/appointments/[id]` | Admin | Update status or assign mechanic |
-| `DELETE` | `/api/appointments/[id]` | Customer/Admin | Cancel (customer: own pending only) |
-| `GET` | `/api/appointments/slots` | Authenticated | Get available slots for a date + service |
-
-### Reviews
-
-| Method | Endpoint | Access | Description |
-|---|---|---|---|
-| `GET` | `/api/reviews` | Public | Get reviews for a service (`?serviceId=`) |
-| `POST` | `/api/reviews` | Customer | Submit a review (verified buyer required) |
-
-### Admin
-
-| Method | Endpoint | Access | Description |
-|---|---|---|---|
-| `GET` | `/api/stats` | Admin | Revenue, counts, distributions, top services |
-| `GET` | `/api/users` | Admin | List all users |
-| `PUT` | `/api/users/[id]` | Admin | Change a user's role |
-| `DELETE` | `/api/users/[id]` | Admin | Delete a user (self-deletion blocked) |
+### Business Administration
+`GET /api/stats` (KPI analytics, Admin only) • `GET /api/users` • `PUT/DELETE /api/users/[id]`
 
 ---
 
-## Pages & Screens
+## Security & Compliance
 
-| Route | Screen | Access |
-|---|---|---|
-| `/` | Homepage: hero, services preview, about & stats counters | Public |
-| `/services` | Services catalog with search and filter | Public |
-| `/services/[id]` | Service detail + reviews + booking CTA | Public |
-| `/book` | Multi-step booking funnel with real-time slot picker | Authenticated |
-| `/login` | Sign-in form | Public |
-| `/register` | Registration form | Public |
-| `/dashboard` | Customer appointments, cancellation, and review submission | Authenticated |
-| `/admin` | Admin overview: KPIs + popular services + recent bookings | Admin |
-| `/admin/appointments` | Full appointment table with status dispatch | Admin |
-| `/admin/services` | Service CRUD form and management table | Admin |
-| `/admin/users` | User table with role management | Admin |
+- **HTTP-Only Cookies**: JWT tokens are inaccessible to browser scripts, stopping XSS injection attacks.
+- **Cross-Site Request Protection**: SameSite=Strict cookies shield database writes.
+- **Input Validation**: Zero body/query data is accepted without passing through structured Zod schema checks.
+- **Data Encapsulation**: Password variables are marked with `select: false` to ensure credentials do not leave the database.
 
 ---
 
-## Security
+## Production SEO & Performance
 
-| Mechanism | Implementation |
-|---|---|
-| Password hashing | `bcryptjs` with 10 salt rounds |
-| Session tokens | JWT signed with `JWT_SECRET`, 7-day expiry |
-| Cookie security | `HttpOnly`, `Secure` (production only), `SameSite=Strict` |
-| Input validation | Zod schemas on every API route before any DB access |
-| Role enforcement | Server-side RBAC via `getAuthenticatedUser(roles[])` |
-| Admin self-lockout guard | Admin cannot delete or downgrade their own account |
-| Secrets management | All credentials in `.env.local`, excluded from git |
-
----
-
-## SEO & Performance
-
-| Feature | Implementation |
-|---|---|
-| Page metadata | `export const metadata` on every page and layout |
-| Open Graph | Title, description, and hero image in `layout.tsx` |
-| Dynamic sitemap | `/sitemap.xml` — pulls live service IDs from MongoDB Atlas |
-| Robots policy | `/robots.txt` — blocks `/admin/`, `/dashboard/`, `/api/` |
-| Schema.org JSON-LD | `AutoRepair` (LocalBusiness) on homepage; `Service` on detail pages |
-| PWA manifest | `/manifest.webmanifest` — standalone display, dark navy theme, GearSync icons |
-| PWA icons | `icon-192.png` and `icon-512.png` in `/public` |
-| Font optimisation | Google Fonts (Chakra Petch + Mulish) via `next/font` with `display: swap` |
-| Static assets | All images served from `/public/assets/images/` via root-relative URLs |
-| Production build | Turbopack compilation: 26 static and dynamic routes verified |
+- **Structured JSON-LD**: Homepage renders `AutoRepair` (LocalBusiness) schema; dynamic service detail pages output `Service` schema.
+- **Dynamic Sitemap**: Dynamic sitemap script (`sitemap.ts`) joins static routes and live Mongo service records automatically.
+- **Crawl Indexing**: `robots.txt` guidelines block indexing of dashboard, admin, and backend `/api/` paths.
+- **PWAs ready**: `manifest.webmanifest` configuration maps icon sets, standalone displays, and brand theme accents.
 
 ---
 
 ## Getting Started
 
-### Prerequisites
-
-- Node.js 20 or higher
-- A MongoDB Atlas cluster (or a local MongoDB instance)
-
-### 1. Clone the Repository
-
-```bash
-git clone https://github.com/Abdurrehman510/Gear-Sync.git
-cd Gear-Sync
-```
-
-### 2. Install Dependencies
-
-```bash
-npm install
-```
-
-### 3. Configure Environment Variables
-
-Create a `.env.local` file in the project root:
-
-```env
-MONGODB_URI=mongodb+srv://<user>:<password>@<cluster>.mongodb.net/gearsync?retryWrites=true&w=majority&appName=Cluster0
-JWT_SECRET=your-strong-random-secret-key-here
-NEXT_PUBLIC_APP_URL=http://localhost:3000
-```
-
-> Never commit `.env.local` to version control. It is already listed in `.gitignore`.
-
-### 4. Run the Development Server
-
-```bash
-npm run dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) in your browser.
-
-### 5. First-Time Setup
-
-1. Go to `http://localhost:3000/register` and register your first account
-2. This account is **automatically granted the `admin` role**
-3. The services catalog **auto-seeds** with 5 default services on the first `/api/services` request if the collection is empty
+1. **Clone & Install**:
+   ```bash
+   git clone https://github.com/Abdurrehman510/Gear-Sync.git
+   cd Gear-Sync
+   npm install
+   ```
+2. **Add Environment Settings** in `.env.local`:
+   ```env
+   MONGODB_URI=your_mongodb_atlas_connection_string
+   JWT_SECRET=your_jwt_signature_secret_key
+   NEXT_PUBLIC_APP_URL=http://localhost:3000
+   ```
+3. **Run Dev server**:
+   ```bash
+   npm run dev
+   ```
+4. **Onboard**: Register your first profile at `/register` to claim administrative authorization automatically.
 
 ---
 
-## Environment Variables
+## About the Author
 
-| Variable | Required | Description |
-|---|---|---|
-| `MONGODB_URI` | Yes | Full MongoDB Atlas connection string |
-| `JWT_SECRET` | Yes | Secret key for signing and verifying JWT tokens |
-| `NEXT_PUBLIC_APP_URL` | Yes | Public base URL used in sitemap and robots.txt |
+**Abdurrehman Narmawala**  
+*Founder & Enterprise Architect*  
 
----
+I am the founder of an IT Consulting & Digital Transformation firm specializing in building high-performance, enterprise-grade web applications, custom SaaS architectures, AI integrations, automated workflows, and robust business software. 
 
-## Deployment
+We partner with organizations to modernize their legacy operations, scale their digital infrastructure, and launch market-disrupting software products with absolute quality. 
 
-### Build for Production
+### Let's Collaborate
+Are you looking to build a high-performance web platform, optimize your digital operations, or launch a custom SaaS product? We handle paid consulting, architecture design, and end-to-end software development. 
 
-```bash
-npm run build
-npm start
-```
-
-### Deploy to Vercel (Recommended)
-
-1. Push your code to GitHub
-2. Import the repository at [vercel.com/new](https://vercel.com/new)
-3. Set the three environment variables in the Vercel project settings
-4. Click Deploy — Vercel handles serverless Next.js Route Handlers automatically
-
-### Deploy to Other Platforms
-
-The app runs on any platform supporting Node.js (Railway, Render, AWS, DigitalOcean App Platform, etc.). Ensure environment variables are configured and MongoDB Atlas Network Access allows connections from the host IP.
-
----
-
-## Available Scripts
-
-| Script | Description |
-|---|---|
-| `npm run dev` | Start the development server with Turbopack |
-| `npm run build` | Compile an optimised production build |
-| `npm start` | Serve the production build |
-| `npm run lint` | Run ESLint across the codebase |
-
----
-
-<div align="center">
-
-Built with love by [Abdurrehman510](https://github.com/Abdurrehman510)
-
-</div>
+*   🌐 **Portfolio & Case Studies**: [abdurrehman.co.in](https://abdurrehman.co.in)
+*   📧 **Direct Inquiry**: [abdurrehmannarmawala510@gmail.com](mailto:abdurrehmannarmawala510@gmail.com)
+*   💼 **LinkedIn**: [in/abdurrehman-narmawala](https://linkedin.com/in/abdurrehman-narmawala)
+*   🐙 **GitHub**: [github.com/Abdurrehman510](https://github.com/Abdurrehman510)
+*   📞 **Telephone**: Available upon request / via Portfolio contact
