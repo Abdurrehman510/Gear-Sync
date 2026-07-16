@@ -1,0 +1,23 @@
+import { NextResponse } from 'next/server';
+import { getCurrentUser } from '@/lib/auth';
+
+export async function GET() {
+  try {
+    const user = await getCurrentUser();
+    if (!user) {
+      return NextResponse.json(
+        { message: 'Not authenticated', user: null },
+        { status: 401 }
+      );
+    }
+    return NextResponse.json(
+      { user },
+      { status: 200 }
+    );
+  } catch (error) {
+    return NextResponse.json(
+      { message: 'An internal server error occurred', user: null },
+      { status: 500 }
+    );
+  }
+}
