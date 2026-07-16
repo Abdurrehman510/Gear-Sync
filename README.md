@@ -154,28 +154,6 @@ All requests expect and return JSON payloads. Session cookies must be present fo
 
 ---
 
-## Getting Started
-
-1. **Clone & Install**:
-   ```bash
-   git clone https://github.com/Abdurrehman510/Gear-Sync.git
-   cd Gear-Sync
-   npm install
-   ```
-2. **Add Environment Settings** in `.env.local`:
-   ```env
-   MONGODB_URI=your_mongodb_atlas_connection_string
-   JWT_SECRET=your_jwt_signature_secret_key
-   NEXT_PUBLIC_APP_URL=http://localhost:3000
-   ```
-3. **Run Dev server**:
-   ```bash
-   npm run dev
-   ```
-4. **Onboard**: Register your first profile at `/register` to claim administrative authorization automatically.
-
----
-
 ## About the Author
 
 **Abdurrehman Narmawala**  
