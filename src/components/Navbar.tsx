@@ -76,7 +76,7 @@ export default function Navbar() {
         
         {/* LOGO */}
         <Link href="/" className="logo">
-          <img src="/assets/images/logo.png" alt="GearSync home" style={{ display: 'block', height: '48px', width: 'auto', objectFit: 'contain' }} />
+          <img src="/assets/images/logo.png" alt="GearSync home" style={{ display: 'block', height: '80px', width: 'auto', objectFit: 'contain' }} />
         </Link>
 
         {/* NAVIGATION DESKTOP */}
