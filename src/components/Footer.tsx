@@ -63,9 +63,9 @@ export default function Footer() {
               </p>
             </li>
             <li style={{ marginBottom: '15px' }}>
-              <a href="tel:+919825349583" className="footer-link" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <a href="tel:+61398253495" className="footer-link" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                 <span className="material-symbols-rounded" style={{ color: 'var(--international-orange-engineering)' }}>call</span>
-                <span className="span" style={{ fontSize: '1.4rem', color: 'var(--cadet-blue-creyola)' }}>+91 98253 49583</span>
+                <span className="span" style={{ fontSize: '1.4rem', color: 'var(--cadet-blue-creyola)' }}>+61 3 9825 3495</span>
               </a>
             </li>
             <li style={{ marginBottom: '15px' }}>
@@ -77,7 +77,7 @@ export default function Footer() {
             <li>
               <address className="footer-link address" style={{ display: 'flex', alignItems: 'center', gap: '8px', fontStyle: 'normal' }}>
                 <span className="material-symbols-rounded" style={{ color: 'var(--international-orange-engineering)' }}>location_on</span>
-                <span className="span" style={{ fontSize: '1.4rem', color: 'var(--cadet-blue-creyola)' }}>21 King Street, Melbourne, Australia</span>
+                <span className="span" style={{ fontSize: '1.4rem', color: 'var(--cadet-blue-creyola)' }}>21 King Street, Melbourne VIC 3000, Australia</span>
               </address>
             </li>
           </ul>

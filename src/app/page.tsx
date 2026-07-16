@@ -91,11 +91,13 @@ export default function HomePage() {
             "image": "http://localhost:3000/assets/images/logo.png",
             "description": "Expert diagnostics and repairs by certified mechanics to keep your vehicle running smoothly.",
             "url": "http://localhost:3000",
-            "telephone": "+91 98253 49583",
+            "telephone": "+61 3 9825 3495",
             "address": {
               "@type": "PostalAddress",
               "streetAddress": "21 King Street",
               "addressLocality": "Melbourne",
+              "addressRegion": "VIC",
+              "postalCode": "3000",
               "addressCountry": "AU"
             },
             "openingHoursSpecification": [
