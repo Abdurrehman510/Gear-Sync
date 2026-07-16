@@ -57,7 +57,7 @@ export default function RootLayout({
       </head>
       <body style={{ backgroundColor: 'var(--white)', minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
         <Navbar />
-        <main style={{ flex: 1, paddingBlockStart: '80px' }}>{children}</main>
+        <main style={{ flex: 1 }}>{children}</main>
         <Footer />
       </body>
     </html>

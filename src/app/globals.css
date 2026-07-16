@@ -1282,3 +1282,31 @@ body {
   from { transform: rotate(-90deg) scale(0.8); }
   to { transform: rotate(0) scale(1); }
 }
+
+/* Pad main content on non-homepage views to prevent header overlap */
+main {
+  padding-top: 90px;
+}
+
+body.home-page main {
+  padding-top: 0;
+}
+
+/* Scrolled Header style overrides */
+.header.active {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: var(--oxford-blue-1);
+  padding-block: 15px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.45);
+  border-block-end: 1px solid var(--space-cadet);
+  transition: all 0.3s ease;
+}
+
+@media (min-width: 992px) {
+  .header.active {
+    padding-block: 15px;
+  }
+}

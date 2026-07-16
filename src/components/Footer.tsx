@@ -12,7 +12,7 @@ export default function Footer() {
           {/* Brand & About */}
           <div className="footer-brand">
             <Link href="/" className="logo">
-              <img src="/assets/images/logo.png" width="128" height="63" alt="GearSync - Home" />
+              <img src="/assets/images/logo.png" alt="GearSync - Home" style={{ display: 'block', height: '55px', width: 'auto', objectFit: 'contain' }} />
             </Link>
 
             <p className="footer-text" style={{ fontSize: '1.4rem', color: 'var(--cadet-blue-creyola)', marginBlock: '20px 30px' }}>

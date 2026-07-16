@@ -27,6 +27,9 @@ export default function HomePage() {
   });
 
   useEffect(() => {
+    // Add home-page class to body for custom layout adjustments
+    document.body.classList.add('home-page');
+
     // Fetch top services
     async function fetchServices() {
       try {
@@ -70,7 +73,10 @@ export default function HomePage() {
       });
     }, 40);
 
-    return () => clearInterval(interval);
+    return () => {
+      clearInterval(interval);
+      document.body.classList.remove('home-page');
+    };
   }, []);
 
   return (

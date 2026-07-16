@@ -71,12 +71,12 @@ export default function Navbar() {
   ];
 
   return (
-    <header className={`header ${isScrolled ? 'active' : ''}`} style={{ transition: 'var(--transition)' }}>
+    <header className={`header ${pathname !== '/' || isScrolled ? 'active' : ''}`} style={{ transition: 'var(--transition)' }}>
       <div className="container" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         
         {/* LOGO */}
         <Link href="/" className="logo">
-          <img src="/assets/images/logo.png" width="128" height="63" alt="GearSync home" style={{ display: 'block' }} />
+          <img src="/assets/images/logo.png" alt="GearSync home" style={{ display: 'block', height: '48px', width: 'auto', objectFit: 'contain' }} />
         </Link>
 
         {/* NAVIGATION DESKTOP */}
