@@ -130,6 +130,19 @@ export default function Navbar() {
                 </Link>
               </li>
             )}
+
+            {/* Mobile Book Now Link */}
+            <li className="mobile-only-btn" style={{ width: '100%', marginTop: '10px' }}>
+              <Link 
+                href="/book" 
+                className="btn btn-primary" 
+                style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', height: '40px' }}
+                onClick={() => setIsMenuOpen(false)}
+              >
+                <span className="span" style={{ fontSize: '1.3rem' }}>Book Now</span>
+                <span className="material-symbols-rounded" style={{ fontSize: '18px', marginLeft: '5px' }}>arrow_forward</span>
+              </Link>
+            </li>
           </ul>
         </nav>
 
@@ -160,7 +173,7 @@ export default function Navbar() {
             </Link>
           )}
 
-          <Link href="/book" className="btn btn-primary" style={{ padding: '10px 20px', height: '40px', display: 'flex', alignItems: 'center' }}>
+          <Link href="/book" className="btn btn-primary desktop-only-btn" style={{ padding: '10px 20px', height: '40px', display: 'flex', alignItems: 'center' }}>
             <span className="span" style={{ fontSize: '1.3rem' }}>Book Now</span>
             <span className="material-symbols-rounded" style={{ fontSize: '18px', marginLeft: '5px' }}>arrow_forward</span>
           </Link>
@@ -204,12 +217,14 @@ export default function Navbar() {
             align-items: flex-start !important;
             gap: 15px !important;
           }
-          .desktop-only-auth {
+          .desktop-only-auth,
+          .desktop-only-btn {
             display: none !important;
           }
         }
         @media (min-width: 992px) {
-          .mobile-only-auth {
+          .mobile-only-auth,
+          .mobile-only-btn {
             display: none !important;
           }
         }
